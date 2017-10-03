@@ -217,6 +217,32 @@ private:
   std::string uri_;
 };
 
+class AccessControlAllowHeaders : public Header {
+  public:
+    NAME("Access-Control-Allow-Headers")
+
+        AccessControlAllowHeaders() { }
+
+    explicit AccessControlAllowHeaders(const char* headers)
+        : headers_(headers)
+    { }
+    explicit AccessControlAllowHeaders(const std::string& headers)
+        : headers_(headers)
+    { }
+
+    void parse(const std::string& data);
+    void write(std::ostream& os) const;
+
+    void setUri(std::string headers) {
+        headers_ = std::move(headers);
+    }
+
+    std::string uri() const { return  headers_; }
+
+  private:
+    std::string headers_;
+};
+
 class CacheControl : public Header {
 public:
     NAME("Cache-Control")

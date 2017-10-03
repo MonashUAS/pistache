@@ -462,6 +462,16 @@ AccessControlAllowOrigin::write(std::ostream& os) const {
 }
 
 void
+AccessControlAllowHeaders::parse(const std::string& data) {
+    headers_ = data;
+}
+
+void
+AccessControlAllowHeaders::write(std::ostream& os) const {
+    os << headers_;
+}
+
+void
 EncodingHeader::parseRaw(const char* str, size_t len) {
     // TODO: case-insensitive
     //
