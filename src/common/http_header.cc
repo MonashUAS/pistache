@@ -82,6 +82,39 @@ Allow::addMethods(const std::vector<Http::Method>& methods)
     std::copy(std::begin(methods), std::end(methods), std::back_inserter(methods_));
 }
 
+void
+AccessControlAllowMethods::parseRaw(const char* str, size_t len) {
+}
+
+void
+AccessControlAllowMethods::write(std::ostream& os) const {
+    /* This puts an extra ',' at the end :/
+        std::copy(std::begin(methods_), std::end(methods_),
+        std::ostream_iterator<Http::Method>(os, ", "));
+    */
+
+    for (std::vector<Http::Method>::size_type i = 0; i < methods_.size(); ++i) {
+        os << methods_[i];
+        if (i < methods_.size() - 1) os << ", ";
+    }
+}
+
+void
+AccessControlAllowMethods::addMethod(Http::Method method) {
+    methods_.push_back(method);
+}
+
+void
+AccessControlAllowMethods::addMethods(std::initializer_list<Method> methods) {
+    std::copy(std::begin(methods), std::end(methods), std::back_inserter(methods_));
+}
+
+void
+AccessControlAllowMethods::addMethods(const std::vector<Http::Method>& methods)
+{
+    std::copy(std::begin(methods), std::end(methods), std::back_inserter(methods_));
+}
+
 CacheControl::CacheControl(Http::CacheDirective directive)
 {
     directives_.push_back(directive);

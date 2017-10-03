@@ -160,6 +160,37 @@ private:
     std::vector<Mime::MediaType> mediaRange_;
 };
 
+class AccessControlAllowMethods : public Header {
+  public:
+    NAME("Access-Control-Allow-Methods");
+
+    AccessControlAllowMethods() { }
+
+    explicit AccessControlAllowMethods(const std::vector<Http::Method>& methods)
+        : methods_(methods)
+    { }
+    explicit AccessControlAllowMethods(std::initializer_list<Http::Method> methods)
+        : methods_(methods)
+    { }
+
+    explicit AccessControlAllowMethods(Http::Method method)
+    {
+        methods_.push_back(method);
+    }
+
+    void parseRaw(const char *str, size_t len);
+    void write(std::ostream& os) const;
+
+    void addMethod(Http::Method method);
+    void addMethods(std::initializer_list<Method> methods);
+    void addMethods(const std::vector<Http::Method>& methods);
+
+    std::vector<Http::Method> methods() const { return methods_; }
+
+  private:
+    std::vector<Http::Method> methods_;
+};
+
 class AccessControlAllowOrigin : public Header {
 public:
   NAME("Access-Control-Allow-Origin")
